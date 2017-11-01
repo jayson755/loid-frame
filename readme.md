@@ -1,25 +1,25 @@
-##项目构想
+## 项目构想
 
 laravel框架升级太快，特别是非LTS版本，速度简直飞起，每次升级就会更改还能多代码，相当麻烦。那能不能写一个依赖于laravel的外层，使其对版本的依赖降低，达到随便更换版本而修改那么一丢丢代码呢
 
-##项目程序
+## 项目程序
 
-###loid
+### loid
 本项目名为loid,为达到上述目的而作的一个测试。
 
 loid其功能以模块的形式存在，一个模块一个包，分为强依赖模块（不可拆卸删除）和弱依赖模块（可拆卸删除）；
 
-###loid-frame
+### loid-frame
 loid-frame为核心框架，并加载一些列loid的moudle,所有功能都以moudle存在。
 
-###loid-module-manager-role
+### loid-module-manager-role
 loid-module-manager-role为loid的一个模块，顾名思义，一个后台管理人员的role模块，依赖于loid-frame,为loid的强依赖模块；
 
 
-##>>>
+## >>>
 *其余模块还没开发呢，我懒得很。*
 
-##项目使用
+## 项目使用
 先下载laravel任何版本(目前以5.5为基础)，然后
 ```base
 composer require loid-frame
@@ -31,7 +31,7 @@ php artisan loid:boot
 如果不行，真的怪我，因为我刚从本地gitlab上传至github,没有改`composer.json`,也没有添加任何tag,如果感兴趣，先构思下项目吧，毕竟我还没开发完呢，就刚有个雏形，再说我也翻了很严重的懒癌，github上的其他项目就能看出来，尼玛全是半成品;
 
 
-##项目讲解
+## 项目讲解
 
 
 每个模块都可以存在配置文件，由`loid-frame`负责覆盖laravel>app>config;
