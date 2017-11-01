@@ -46,7 +46,7 @@ php artisan loid:boot
 
 没添加一个模块，执行一次`php artisan loid:boot`进行初始化引导,该命令会连带执行`migrate`命令，模块配置文件在`loid-frame`下的storage目录，引导时会把模块数据叠加到`前缀_system_support_moudle`数据表中；
 
-前端插件放在`loid-frame`下的`resources`文件夹中，每个模块的前端资源放在对应的模块位置，在使用时有一个bug未处理，因为我还没开发到那里去哈哈，即`asset_site(string $path, string $sign, string $filename)`中的第一个参数需要在每个模块中做另外调整。
+前端插件放在`loid-frame`下的`resources`文件夹中,服务器重定向路径，详见`www.nginx.com.conf`，每个模块的前端资源放在对应的模块位置，在使用时有一个bug未处理，因为我还没开发到那里去哈哈，即`asset_site(string $path, string $sign, string $filename)`中的第一个参数需要在每个模块中做另外调整。
 
 本项目使用blade模板引擎；
 
