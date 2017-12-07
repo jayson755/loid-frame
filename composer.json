@@ -1,5 +1,5 @@
 {
-    "name": "jiangx/loid-frame",
+    "name": "jayson755/loid-frame",
     "description": "laravel扩展包",
     "type": "library",
     "license": "MIT",
@@ -13,8 +13,8 @@
     "require": {
         "guzzlehttp/guzzle": "*",
         "laravel/framework": "5.5.*|5.4.*",
-		"jiangx/loid-module-manager":"^1.0",
-        "jiangx/loid-module-manager-role":"^1.0"
+		"jayson755/loid-module-manager":"^1.0",
+        "jayson755/loid-module-manager-role":"^1.0"
     },
     "autoload":{
         "files": [
