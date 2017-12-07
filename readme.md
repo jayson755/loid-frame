@@ -22,7 +22,7 @@ loid-module-manager-role为loid的一个模块，顾名思义，一个后台管�
 ## 项目使用
 先下载laravel任何版本(目前以5.5为基础)，然后
 ```base
-composer require loid-frame
+composer require jayson755/loid-frame
 ```
 然后模块初始化引导
 ```base
