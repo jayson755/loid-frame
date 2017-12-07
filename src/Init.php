@@ -1,6 +1,7 @@
 <?php
 namespace Loid\Frame;
 use DB;
+use Closure;
 
 class Init{
     
@@ -22,6 +23,6 @@ class Init{
     /**
      *模块功能数据初始化
      */
-    public static function moudleInit(){}
+    public static function moudleInit($request, Closure $next){}
     
 }

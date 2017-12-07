@@ -16,7 +16,7 @@ class MoudleInit{
      */
     public function handle($request, Closure $next){
         
-        $this->bootMoudlesInit();
+        $this->bootMoudlesInit($request, $next);
         
         return $next($request);
     }
@@ -24,9 +24,9 @@ class MoudleInit{
     /**
      *引导所有模块功能初始化
      */
-    private function bootMoudlesInit(){
-        foreach (DB::table('system_support_moudle')->where('moudle_status', 'on')->get() as $moudle) {
-            call_user_func(['Loid\Frame\Manager\Role\Init', 'moudleInit']);
+    private function bootMoudlesInit($request, Closure $next){
+        foreach (app()->moudle as $moudle) {
+            call_user_func_array([$moudle->moudle_namespace . '\Init', 'moudleInit'], func_get_args());
         }
     }
 }

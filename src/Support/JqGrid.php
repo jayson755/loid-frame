@@ -24,6 +24,8 @@ class JqGrid {
     
     private $filtField = [];
     
+    private $fields;
+    
     
     private static $_instance;
     
@@ -113,7 +115,10 @@ class JqGrid {
         $this->filters = array_merge($filters, $this->filters);
     }
     
-    
+    public function select(array $fields){
+        $this->fields = $fields;
+        return $this;
+    }
     
     public function query($appendFilter = []){
         $indexPage = $this->indexPage;
@@ -159,6 +164,7 @@ class JqGrid {
                 }
             }
         });
+        if ($this->fields) $list = $list->select($this->fields);
         
         $count = (clone ($list))->count();
         
@@ -171,7 +177,9 @@ class JqGrid {
         
         $listData = [];
         foreach ($list as $val) {
-            $val = $val->toArray();
+            if ('stdClass' == get_class($val)) {
+                $val = get_object_vars($val);
+            }
             array_walk($val, function(&$v, $k, $filtField){
                 if (in_array($k, $filtField)) {
                     $v = '';

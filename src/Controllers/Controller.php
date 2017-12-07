@@ -8,19 +8,15 @@ use App\Http\Controllers\Controller as Laravel;
 
 class Controller extends Laravel{
     
+    protected $view_base_prefix = null;
+    
     protected $view_prefix = null;
     
-    public function __construct(){
-        
-        $this->view_prefix = config('view.default.namespace') . '::' . config('view.default.theme');
-        
-    }
+    protected $rows = 20;
     
-    /**
-     * 返回类的文件路径
-     */
-    protected static function getFilePath(){
-        return __DIR__;
+    public function __construct(){
+        $this->view_base_prefix = $this->view_prefix = config('view.default.namespace') . '::' . config('view.default.theme') . DIRECTORY_SEPARATOR;
+        
     }
     
     /**
@@ -32,10 +28,9 @@ class Controller extends Laravel{
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function view($view = null, $data = [], $mergeData = []){
-        
-        $resource = str_replace(dirname(request()->server('DOCUMENT_ROOT')) , '', str_replace('/vendor', '', dirname(dirname($this->getFilePath()))));
-        
-        return view($view, array_merge($data, ['resource'=>"theme{$resource}"]), $mergeData);
+        $base_resource = str_replace(dirname(request()->server('DOCUMENT_ROOT')) , '', str_replace('/vendor', '', dirname(dirname(__DIR__))));
+        $resource = str_replace(dirname(request()->server('DOCUMENT_ROOT')) , '', str_replace('/vendor', '', dirname(dirname(dirname((new \ReflectionClass(get_called_class()))->getFileName())))));
+        return view($view, array_merge($data, ['view_base_prefix'=>$this->view_base_prefix, 'base_resource'=>"theme{$base_resource}",'resource'=>"theme{$resource}"]), $mergeData);
     }
     
     /**
@@ -44,9 +39,19 @@ class Controller extends Laravel{
      */
     public function getjQGridList($param){
         if (!method_exists($this, '_getList')) {
-            return json(['code' => 0, 'msg' => '无该查找']);
+            return response()->json(['code' => 0, 'msg' => '无该查找']);
         }
-        return json(call_user_func_array([$this, '_getList'], func_get_args($param)));
+        return response()->json(call_user_func_array([$this, '_getList'], func_get_args($param)));
     }
     
+    /**
+     * 组织response
+     */
+    public function response(bool $success, string $url = '', string $msg = '操作成功', array $data = []){
+        $code = 0;
+        if (true === $success) {
+            $code = 1;
+        }
+        return response()->json(compact('code', 'url', 'msg', 'data'));
+    }
 }

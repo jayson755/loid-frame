@@ -5,6 +5,7 @@ use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Loid\Frame\Commands\Bootstrap as LoidBootstrap;
 use Loid\Frame\Init as LoidInit;
 use DB;
+use Route;
 
 class ServiceProvider extends LaravelServiceProvider{
     
@@ -48,6 +49,12 @@ class ServiceProvider extends LaravelServiceProvider{
         } else {
             //注册核心路由文件
             $this->loadRoutesFrom($path . '/routes/web.php');
+            
+            if (file_exists($path . '/routes/api.php')) {
+                Route::prefix('api')
+                ->middleware('api')
+                ->group($path . '/routes/api.php');
+            }
             //注册核心视图文件
             $this->loadViewsFrom($path . '/resources/views', config('view.default.namespace'));
             
@@ -60,20 +67,28 @@ class ServiceProvider extends LaravelServiceProvider{
      * 引导模块
      */
     private function bootMoudles(){
-        $moudles = DB::table('system_support_moudle')->where('moudle_status', 'on')->get();
-        foreach ($moudles as $val) {
+        $moudle = [];
+        foreach (DB::table('system_support_moudle')->where('moudle_status', 'on')->get() as $val) {
             if (false != $path = LoidInit::authMoudle($val->moudle_namespace . '\Init')) {
                 //合并模块配置文件
                 $this->mergeConfig($path . '/config');
                 //注册模块路由文件
                 $this->loadRoutesFrom($path . '/routes/web.php');
+                
+                if (file_exists($path . '/routes/api.php')) {
+                    Route::prefix('api')
+                    ->middleware('api')
+                    ->group($path . '/routes/api.php');
+                }
                 //注册模块视图文件
                 $this->loadViewsFrom($path . '/resources/views', $val->view_namespace);
+                
+                $moudle[$val->moudle_sign] = $val;
             } else {
-                $val->moudle_status = 'off';
-                $val->save();
+                DB::table('system_support_moudle')->where('moudle_id', $val->moudle_id)->update(['moudle_status'=>'off']);
             }
         }
+        $this->app->moudle = $moudle;
     }
     
     /**
@@ -89,6 +104,9 @@ class ServiceProvider extends LaravelServiceProvider{
             if ($file == '.' || $file == '..') continue;
             $filename = pathinfo($file, PATHINFO_FILENAME);
             foreach (include_once($path . '/' . $file) as $key => $val) {
+                if ('aliases' === $filename) {
+                    class_alias($val, $key); //为类设置别名
+                }
                 if (is_array($val)) {
                     $this->app['config']->set("{$filename}.{$key}", array_merge($this->app['config']->get("{$filename}.{$key}") ?: [], $val));
                 } else {

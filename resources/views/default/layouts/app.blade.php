@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{config('view.title')}}</title>
 
     <meta name="keywords" content="{{config('view.title')}}">
@@ -17,18 +18,18 @@
 
     <link rel="shortcut icon" href="favicon.ico">
     
-    <link href="{{asset_site($resource, 'css', 'bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{asset_site($resource, 'css', 'font-awesome.min.css')}}" rel="stylesheet">
-    <link href="{{asset_site($resource, 'css', 'animate.min.css')}}" rel="stylesheet">
-    <link href="{{asset_site($resource, 'css', 'admin.min.css')}}" rel="stylesheet">
-    <link href="{{asset_site($resource, 'css', 'style.min.css')}}" rel="stylesheet">
-    <link href="{{asset_site($resource, 'plugin', 'toastr/toastr.min.css')}}" rel="stylesheet">
+    <link href="{{asset_site($base_resource, 'css', 'bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset_site($base_resource, 'css', 'font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{asset_site($base_resource, 'css', 'animate.min.css')}}" rel="stylesheet">
+    <link href="{{asset_site($base_resource, 'css', 'admin.min.css')}}" rel="stylesheet">
+    <link href="{{asset_site($base_resource, 'css', 'style.min.css')}}" rel="stylesheet">
+    <link href="{{asset_site($base_resource, 'plugin', 'toastr/toastr.min.css')}}" rel="stylesheet">
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     <div id="wrapper">
         <!--左侧导航开始-->
-        @include($view_prefix . '/left')
+        @include($view_base_prefix . '/left')
         <!--左侧导航结束-->
         
         
@@ -36,39 +37,44 @@
         <div id="page-wrapper" class="gray-bg dashbard-1">
             
             <!--右侧顶部开始-->
-            @include($view_prefix . '/top')
+            @include($view_base_prefix . '/top')
             <!--右侧顶部结束-->
             
             <!--tab标签条开始-->
-            @include($view_prefix . '/tab')
+            @include($view_base_prefix . '/tab')
             <!--tab标签结束-->
             
             @yield('content')
             
             <div class="footer" id="right_footer">
                 <!--尾部开始-->
-                @include($view_prefix . '/footer')
+                @include($view_base_prefix . '/footer')
                 <!--尾部结束-->
             </div>
         </div>
         <!--右侧部分结束-->
         
         <!--右侧边栏开始-->
-        @include($view_prefix . '/sidebar')
+        @include($view_base_prefix . '/sidebar')
         <!--右侧边栏结束-->
     </div>
     
-    <script type='text/javascript' src="{{asset_site($resource, 'js', 'loid.js')}}"></script>
-    <script type='text/javascript' src="{{asset_site($resource, 'js', 'jquery.form.js')}}"></script>
-    <script type='text/javascript' src="{{asset_site($resource, 'plugin', 'metisMenu/jquery.metisMenu.js')}}"></script>
-    <script type='text/javascript' src="{{asset_site($resource, 'plugin', 'slimscroll/jquery.slimscroll.min.js')}}"></script>
-    <script type='text/javascript' src="{{asset_site($resource, 'plugin', 'layer-v2.4/layer.js')}}"></script>
-    <script type='text/javascript' src="{{asset_site($resource, 'js', 'hplus.min.js')}}"></script>
-    <script type='text/javascript' src="{{asset_site($resource, 'js', 'contabs.min.js')}}"></script>
-    <script type='text/javascript' src="{{asset_site($resource, 'plugin', 'pace/pace.min.js')}}"></script>
-    <script type='text/javascript' src="{{asset_site($resource, 'plugin', 'toastr/toastr.min.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'js', 'loid.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'js', 'jquery.form.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'metisMenu/jquery.metisMenu.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'slimscroll/jquery.slimscroll.min.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'layer-v2.4/layer.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'js', 'hplus.min.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'js', 'contabs.min.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'pace/pace.min.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'toastr/toastr.min.js')}}"></script>
 </body>
 <script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 $(function(){
     //工作区域高度自定义
     $("#content-main").height($(window).outerHeight() - $("#right_top").outerHeight() - $("#right_tab").outerHeight() - $("#right_footer").outerHeight());
@@ -90,49 +96,53 @@ $(function(){
     $(".J_logout").click(function(){
         var login_load = layer.load();
         $.ajax({
-            url:"<{:url('/manage/logout')}>",
+            url:"{{route('manage.logout')}}",
             type:"post",
             dataType:"json",
             success:function(){
                 layer.close(login_load);
-                window.location.href="<{:url('/manage/login')}>";
+                window.location.href="{{route('login')}}";
             },
             error:function(){
                 layer.close(login_load);
-                layer.msg('网络错误', {icon: 5});
+                _toastr('网络错误', 'error');
             }
         });
     });
     $(".J_clearCache").click(function(){
         var login_load = layer.load();
         $.ajax({
-            url:"<{:url('/manage/settings/clear')}>",
+            url:"{{route('manage.clear')}}",
             type:"post",
             dataType:"json",
             success:function(){
                 layer.close(login_load);
-                _toastr('success', '已删除系统缓存', '成功提示');
+                _toastr('已删除系统缓存');
             },
             error:function(){
                 layer.close(login_load);
-                _toastr('error', '网络错误', '错误提示');
+                _toastr('网络错误', 'error');
             }
         });
     });
 });
-function _toastr(type, title, msg) {
+function _toastr(message, type, title) {
     switch (type) {
         case 'warning':
-            toastr.warning(title, msg);
+            title = title ? title : '警告提示'; 
+            toastr.warning(message, title);
             break;
         case 'info':
-            toastr.info(title, msg);
+            title = title ? title : '消息提示'; 
+            toastr.info(message, title);
             break;
         case 'error':
-            toastr.error(title, msg);
+            title = title ? title : '错误提示'; 
+            toastr.error(message, title);
             break;
         default:
-            toastr.success(title, msg);
+            title = title ? title : '成功提示'; 
+            toastr.success(message, title);
             break;
     }
     

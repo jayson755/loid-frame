@@ -13,6 +13,7 @@
     "require": {
         "guzzlehttp/guzzle": "*",
         "laravel/framework": "5.5.*|5.4.*",
+		"jiangx/loid-module-manager":"^1.0",
         "jiangx/loid-module-manager-role":"^1.0"
     },
     "autoload":{

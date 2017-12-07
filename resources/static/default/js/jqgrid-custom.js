@@ -1,5 +1,13 @@
 ;
 /**
+ * 编辑框input标签添加属性
+ */
+function addporp(formid) {
+	$.each($(formid[0]).find('input'), function(key, val){
+		$(val).prop('autocomplete', 'off');
+	});
+}
+/**
  *select控件默认
  */
 function selectInit(){
@@ -135,6 +143,10 @@ function arrFormat(cellvalue, json, type){
 		});
 	}
 	return value;
+}
+/*jqGrid动态数据格式化*/
+function urlFormat(cellvalue, rowObject) {
+	//code
 }
 /*jqGrid数组反格式化*/
 function arrUnformat(cellvalue, json, type){
