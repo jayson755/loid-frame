@@ -5,7 +5,7 @@ if (!function_exists('get_route_middleware')) {
      * 获取模块的路由中间件
      */
     function get_route_middleware(){
-        print_r(111111111);die;
+        
     }
 }
 

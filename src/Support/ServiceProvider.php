@@ -73,8 +73,9 @@ class ServiceProvider extends LaravelServiceProvider{
                 //合并模块配置文件
                 $this->mergeConfig($path . '/config');
                 //注册模块路由文件
-                $this->loadRoutesFrom($path . '/routes/web.php');
-                
+                if (file_exists($path . '/routes/web.php')) {
+                    $this->loadRoutesFrom($path . '/routes/web.php');
+                }
                 if (file_exists($path . '/routes/api.php')) {
                     Route::prefix('api')
                     ->middleware('api')
@@ -88,6 +89,7 @@ class ServiceProvider extends LaravelServiceProvider{
                 DB::table('system_support_moudle')->where('moudle_id', $val->moudle_id)->update(['moudle_status'=>'off']);
             }
         }
+        
         $this->app->moudle = $moudle;
     }
     
@@ -108,7 +110,7 @@ class ServiceProvider extends LaravelServiceProvider{
                     class_alias($val, $key); //为类设置别名
                 }
                 if (is_array($val)) {
-                    $this->app['config']->set("{$filename}.{$key}", array_merge($this->app['config']->get("{$filename}.{$key}") ?: [], $val));
+                    $this->app['config']->set("{$filename}.{$key}", $val + ($this->app['config']->get("{$filename}.{$key}") ?? []));
                 } else {
                     $this->app['config']->set("{$filename}.{$key}", $val);
                 }

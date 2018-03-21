@@ -1,1 +1,46 @@
-[{"moudle_sign":"loid-module-manager","moudle_description":"\u7ba1\u7406\u4eba\u5458\u6a21\u5757","moudle_namespace":"Loid\\Module\\Manager","view_namespace":"manager","moudle_version":"1.0.1","moudle_status":"on","created_at":null,"updated_at":null,"deleted_at":null},{"moudle_sign":"loid-module-manager-role","moudle_description":"\u7ba1\u7406\u4eba\u5458\u6743\u9650\u7ba1\u7406\u6a21\u5757","moudle_namespace":"Loid\\Module\\Manager\\Role","view_namespace":"manager-role","moudle_version":"1.0.1","moudle_status":"on","created_at":null,"updated_at":null,"deleted_at":null}]
+[
+  {
+    "moudle_sign": "loid-module-manager",
+    "moudle_description": "管理人员模块",
+    "moudle_namespace": "Loid\\Module\\Manager",
+    "view_namespace": "manager",
+    "moudle_version": "1.0.1",
+    "moudle_status": "on",
+    "created_at": null,
+    "updated_at": null,
+    "deleted_at": null
+  },
+  {
+    "moudle_sign": "loid-module-manager-role",
+    "moudle_description": "管理人员权限管理模块",
+    "moudle_namespace": "Loid\\Module\\Manager\\Role",
+    "view_namespace": "manager-role",
+    "moudle_version": "1.0.1",
+    "moudle_status": "on",
+    "created_at": null,
+    "updated_at": null,
+    "deleted_at": null
+  },
+  {
+    "moudle_sign": "loid-module-content",
+    "moudle_description": "系统内容管理模块",
+    "moudle_namespace": "Loid\\Module\\Content",
+    "view_namespace": "content",
+    "moudle_version": "1.0.1",
+    "moudle_status": "on",
+    "created_at": null,
+    "updated_at": null,
+    "deleted_at": null
+  },
+  {
+    "moudle_sign": "loid-module-lbb",
+    "moudle_description": "系统内容管理模块",
+    "moudle_namespace": "Loid\\Module\\Lbb",
+    "view_namespace": "lbb",
+    "moudle_version": "1.0.1",
+    "moudle_status": "on",
+    "created_at": null,
+    "updated_at": null,
+    "deleted_at": null
+  }
+]
