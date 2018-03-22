@@ -79,16 +79,19 @@ class JqGrid {
             }
             switch ($val['op']) {
                 case "eq"://等于
-                    $filters['rules'][$key]['op'] = 'EQ';
+                    $filters['rules'][$key]['op'] = '=';
                     break;
                 case "ne"://不等
-                    $filters['rules'][$key]['op'] = 'NEQ';
+                    $filters['rules'][$key]['op'] = '<>';
                     break;
                 case "bw"://开始于
-                    $filters['rules'][$key]['op'] = 'EGT'; //大于等于
+                case "ge"://大于等于
+                    $filters['rules'][$key]['op'] = '>='; //大于等于
                     break;
                 case "ew"://开始于
-                    $filters['rules'][$key]['op'] = 'ELT'; //小于等于
+                case "le"://小于等于
+                    $filters['rules'][$key]['op'] = '<='; //小于等于
+                    
                     break;
                 case "cn"://包含
                 case "in"://包含
@@ -105,10 +108,12 @@ class JqGrid {
                     $filters['rules'][$key]['op'] = 'NOT NULL';
                     break;
                 case "bn"://不开始于
-                    $filters['rules'][$key]['op'] = 'LT'; //小于
+                case "lt"://小于
+                    $filters['rules'][$key]['op'] = '<'; //小于
                     break;
                 case "en"://不结束于
-                    $filters['rules'][$key]['op'] = 'GT'; //大于
+                case "gt"://大于
+                    $filters['rules'][$key]['op'] = '>'; //大于
                     break;
             }
         }

@@ -29,6 +29,7 @@
     <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'metisMenu/jquery.metisMenu.js')}}"></script>
     <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'slimscroll/jquery.slimscroll.min.js')}}"></script>
     <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'layer-v2.4/layer.js')}}"></script>
+    <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'laydate-v1.1/laydate.js')}}"></script>
     <script type='text/javascript' src="{{asset_site($base_resource, 'js', 'hplus.min.js')}}"></script>
     <script type='text/javascript' src="{{asset_site($base_resource, 'js', 'contabs.min.js')}}"></script>
     <script type='text/javascript' src="{{asset_site($base_resource, 'plugin', 'pace/pace.min.js')}}"></script>

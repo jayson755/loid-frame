@@ -57,10 +57,9 @@ class ServiceProvider extends LaravelServiceProvider{
             }
             //注册核心视图文件
             $this->loadViewsFrom($path . '/resources/views', config('view.default.namespace'));
-            
-            //引导模块
-            $this->bootMoudles();
         }
+        //引导模块
+        $this->bootMoudles();
     }
     
     /**
@@ -72,19 +71,24 @@ class ServiceProvider extends LaravelServiceProvider{
             if (false != $path = LoidInit::authMoudle($val->moudle_namespace . '\Init')) {
                 //合并模块配置文件
                 $this->mergeConfig($path . '/config');
-                //注册模块路由文件
-                if (file_exists($path . '/routes/web.php')) {
-                    $this->loadRoutesFrom($path . '/routes/web.php');
+                if ($this->app->runningInConsole()) {
+                    //注册模块自定义命令
+                    $this->commands($this->app['config']->get('commands'));
+                } else {
+                    //注册模块路由文件
+                    if (file_exists($path . '/routes/web.php')) {
+                        $this->loadRoutesFrom($path . '/routes/web.php');
+                    }
+                    if (file_exists($path . '/routes/api.php')) {
+                        Route::prefix('api')
+                        ->middleware('api')
+                        ->group($path . '/routes/api.php');
+                    }
+                    //注册模块视图文件
+                    $this->loadViewsFrom($path . '/resources/views', $val->view_namespace);
+                    
+                    $moudle[$val->moudle_sign] = $val;
                 }
-                if (file_exists($path . '/routes/api.php')) {
-                    Route::prefix('api')
-                    ->middleware('api')
-                    ->group($path . '/routes/api.php');
-                }
-                //注册模块视图文件
-                $this->loadViewsFrom($path . '/resources/views', $val->view_namespace);
-                
-                $moudle[$val->moudle_sign] = $val;
             } else {
                 DB::table('system_support_moudle')->where('moudle_id', $val->moudle_id)->update(['moudle_status'=>'off']);
             }

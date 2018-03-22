@@ -5,7 +5,8 @@ namespace Loid\Frame\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller as Laravel;
-
+use DB;
+use Log;
 class Controller extends Laravel{
     
     protected $view_base_prefix = null;
@@ -15,8 +16,12 @@ class Controller extends Laravel{
     protected $rows = 20;
     
     public function __construct(){
+        DB::connection()->enableQueryLog();
         $this->view_base_prefix = $this->view_prefix = config('view.default.namespace') . '::' . config('view.default.theme') . DIRECTORY_SEPARATOR;
-        
+    }
+    
+    public function __destruct(){
+        Log::info(DB::getQueryLog());
     }
     
     /**
@@ -37,7 +42,7 @@ class Controller extends Laravel{
      * 获取 jqGrid 列表
      *
      */
-    public function getjQGridList($param){
+    public function getjQGridList(Request $request, $param){
         if (!method_exists($this, '_getList')) {
             return response()->json(['code' => 0, 'msg' => '无该查找']);
         }
