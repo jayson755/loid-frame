@@ -1,6 +1,7 @@
 <?php
 namespace Loid\Frame\Support;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Loid\Frame\Commands\Bootstrap as LoidBootstrap;
 use Loid\Frame\Init as LoidInit;
@@ -15,9 +16,8 @@ class ServiceProvider extends LaravelServiceProvider{
      * 
      * @return void
      */
-    public function boot(){
-        
-        $this->bootLoid(); //加载框架核心
+    public function boot(Request $request){
+        $this->bootLoid($request); //加载框架核心
         
     }
     
@@ -33,7 +33,7 @@ class ServiceProvider extends LaravelServiceProvider{
     /**
      * 引导框架核心
      */
-    private function bootLoid(){
+    private function bootLoid(Request $request){
         $path = dirname(dirname(__DIR__));
         
         //合并核心配置文件
@@ -43,9 +43,15 @@ class ServiceProvider extends LaravelServiceProvider{
             //注册核心数据库迁移路径
             $this->loadMigrationsFrom($path . '/database/migrations');
             //注册核心install命令
-            $this->commands([
-                LoidBootstrap::class,
-            ]);
+            if ($request->server()['argv'][1] == 'loid:boot') {
+                $this->commands([
+                    LoidBootstrap::class,
+                ]);
+            } else {
+                //引导模块
+                $this->bootMoudles();
+            }
+            
         } else {
             //注册核心路由文件
             $this->loadRoutesFrom($path . '/routes/web.php');
@@ -57,9 +63,11 @@ class ServiceProvider extends LaravelServiceProvider{
             }
             //注册核心视图文件
             $this->loadViewsFrom($path . '/resources/views', config('view.default.namespace'));
+            
+            //引导模块
+            $this->bootMoudles();
         }
-        //引导模块
-        $this->bootMoudles();
+        
     }
     
     /**
