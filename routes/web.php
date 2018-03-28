@@ -2,6 +2,7 @@
 
 get_route_middleware();
 
+Route::get('/home', Loid\Frame\Controllers\IndexController::class.'@index')->middleware('web')->name('manage');
 
 Route::group(['prefix'=>'manage', 'middleware'=>['web', 'auth', \Loid\Frame\Middleware\MoudleInit::class]], function () {
     
