@@ -47,6 +47,10 @@ class ServiceProvider extends LaravelServiceProvider{
                 $this->commands([
                     LoidBootstrap::class,
                 ]);
+            } elseif ($request->server()['argv'][1] == 'loid:user') {
+                $this->commands([
+                    \Loid\Frame\Commands\CreateUser::class,
+                ]);
             } else {
                 //引导模块
                 $this->bootMoudles();
