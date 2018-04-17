@@ -99,7 +99,7 @@ function treeUnformat(cellvalue, json){
 }
 /*jqGrid数组值的展示*/
 function getArrVal(json, type, matches) {
-	var title = '0:[请选择]';
+	var title = ':[请选择]';
 	if (json) {
 		if (type == 'single') {
 			$.each(json, function(kay, val){

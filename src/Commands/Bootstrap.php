@@ -38,9 +38,12 @@ class Bootstrap extends Command
                 continue;
             }
             $this->laravel['migrator']->path("{$moudlePath}/database/migrations");
+            $this->laravel['migrator']->path("{$moudlePath}/database/migrations");
         }
         $this->call('migrate');
+        //$this->call('db:seed --class=UserTableSeeder');
         $this->initMoudlesData($moudles);
+        @exec('composer dumpautoload');
     }
     
     /**

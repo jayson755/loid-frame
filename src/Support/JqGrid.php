@@ -74,6 +74,10 @@ class JqGrid {
             return true;
         }
         foreach ($filters['rules'] as $key => $val) {
+            if ($val['data'] == '') {
+                unset($filters['rules'][$key]);
+                continue;
+            }
             if (preg_match('/^\d{4}-\d{1,2}-\d{1,2}$/', $val['data'])) {
                 $filters['rules'][$key]['data'] = strtotime($val['data']);
             }
@@ -118,6 +122,7 @@ class JqGrid {
             }
         }
         $this->filters = array_merge($filters, $this->filters);
+        
     }
     
     public function select(array $fields){
