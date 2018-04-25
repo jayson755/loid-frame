@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller as Laravel;
 use DB;
 use Log;
+use Illuminate\Support\Facades\Storage;
 class Controller extends Laravel{
     
     protected $view_base_prefix = null;
@@ -58,5 +59,10 @@ class Controller extends Laravel{
             $code = 1;
         }
         return response()->json(compact('code', 'url', 'msg', 'data'));
+    }
+    
+    public function _upload(Request $request){
+        $path = $request->file($request->input('fileName'))->store('public/'. $request->input('fileDistrict'));
+        return response()->json(['url'=>Storage::url($path)]);
     }
 }

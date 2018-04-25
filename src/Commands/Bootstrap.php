@@ -41,7 +41,7 @@ class Bootstrap extends Command
             $this->laravel['migrator']->path("{$moudlePath}/database/migrations");
         }
         $this->call('migrate');
-        //$this->call('db:seed --class=UserTableSeeder');
+        $this->call('storage:link');
         $this->initMoudlesData($moudles);
         @exec('composer dumpautoload');
     }

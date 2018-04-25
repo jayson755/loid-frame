@@ -18,4 +18,7 @@ Route::group(['prefix'=>'manage', 'middleware'=>['web', 'auth', \Loid\Frame\Midd
     
     /*清除缓存*/
     Route::post('clear.html', Loid\Frame\Controllers\IndexController::class.'@clear')->name('manage.clear');
+    
+    /*上传文件*/
+    Route::post('upload.html', Loid\Frame\Controllers\IndexController::class.'@_upload')->name('manage.upload');
 });
