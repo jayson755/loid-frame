@@ -31,12 +31,12 @@ class Controller extends Laravel{
      * @param  string  $view
      * @param  array   $data
      * @param  array   $mergeData
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory 
      */
     public function view($view = null, $data = [], $mergeData = []){
         $base_resource = str_replace(dirname(request()->server('DOCUMENT_ROOT')) , '', str_replace('/vendor', '', dirname(dirname(__DIR__))));
         $resource = str_replace(dirname(request()->server('DOCUMENT_ROOT')) , '', str_replace('/vendor', '', dirname(dirname(dirname((new \ReflectionClass(get_called_class()))->getFileName())))));
-        return view($view, array_merge($data, ['view_base_prefix'=>$this->view_base_prefix, 'base_resource'=>"theme{$base_resource}",'resource'=>"theme{$resource}"]), $mergeData);
+		return view($view, array_merge(['view_base_prefix'=>$this->view_base_prefix, 'base_resource'=>"theme{$base_resource}",'resource'=>"theme{$resource}"], $data), $mergeData);
     }
     
     /**
